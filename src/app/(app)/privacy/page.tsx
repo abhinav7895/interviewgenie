@@ -11,7 +11,7 @@ const PrivacyPolicy: React.FC = () => {
             <div className='w-screen dark:bg-neutral-900'>
             <div className="mx-auto px-4 py-8 max-w-4xl dark:bg-neutral-900 dark:text-neutral-100">
                     <h1 className="text-3xl font-bold mb-6 dark:text-gray-300">Privacy Policy for InterviewGenie</h1>
-                    <p className="mb-4 dark:text-gray-300">Last updated: {new Date().toLocaleDateString()}</p>
+                    <p className="mb-4 dark:text-gray-300">Last updated: 9/8/2024</p>
 
                     <section className="mb-8">
                         <h2 className="text-2xl font-semibold mb-4 dark:text-gray-200">1. Introduction</h2>
