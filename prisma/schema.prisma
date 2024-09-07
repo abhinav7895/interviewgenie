@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String     @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  questions     Question[]
+  rateLimit     RateLimit?
+}
+
+model Question {
+  id             String   @id @default(cuid())
+  userId         String
+  role           String
+  level          String?
+  questionType   String?
+  tone           String?
+  content        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  shareHash      String?  @unique
+  jobDescription String?
+  answers        Answer[]
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("questions")
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+  @@map("answers")
+}
+
+model RateLimit {
+  id             Int      @id @default(autoincrement())
+  userId         String   @unique
+  generatedCount Int      @default(0)
+  resetAt        DateTime
+  user           User     @relation(fields: [userId], references: [id])
+}
