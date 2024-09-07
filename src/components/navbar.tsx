@@ -6,6 +6,8 @@ import { FaGithub } from 'react-icons/fa';
 import { GoArrowRight } from 'react-icons/go';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from './ui/button';
+import { IoLogInOutline } from "react-icons/io5";
+import { FiLogIn } from "react-icons/fi";
 
 const Navbar = () => {
     return (
@@ -15,8 +17,11 @@ const Navbar = () => {
                     <MdOutlineStreetview className='text-4xl text-green-500' />
                 </div>
                 <div className='flex gap-2'>
-                    <Link className={cn(buttonVariants({ className: "flex gap-1 items-center text-neutral-800", size: "sm", variant: "outline" }))} href={""}> Star on <FaGithub className='text-lg' />  </Link>
-                    <Link className={cn(buttonVariants({ className: "flex gap-1 items-center group", size: "sm" }))} href={"/signup"}> Sign up <GoArrowRight className='text-lg group-hover:translate-x-1 transition-all' /></Link>
+                    <Link className={"flex items-center gap-2 bg-opacity-40 border bg-neutral-900 h-[37px] border-neutral-700 text-neutral-200  px-3 rounded-md "} href={""}> Star on <FaGithub className='text-lg' />  </Link>
+                    <Link className={"flex items-center gap-2 border bg-opacity-40 bg-green-700 h-[37px] group border-green-700 text-neutral-200  px-3 rounded-md"} href={"/signin"}>
+                    Signup <FiLogIn className='text-lg' />
+                    </Link>
+                    
                 </div>
             </nav>
         </MaxWidthWrapper>
