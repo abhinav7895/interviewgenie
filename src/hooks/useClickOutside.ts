@@ -4,8 +4,6 @@ export const useClickOutside = (
   ref: React.RefObject<HTMLElement>,
   callback: () => void
 ) => {
-  console.log("lcikec");
-  
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {

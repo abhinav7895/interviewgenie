@@ -30,7 +30,6 @@ const ShareQuestion: React.FC<ShareQuestionProps> = ({ children, className, id }
                 method: "POST"
             });
             const data = await response.json();
-            console.log("hash data", data);
             const currentUrl = getCurrentURL();
             navigator.clipboard.writeText(`${currentUrl}/share/${data.shareHash}`)
             toast.success("Share link copied");

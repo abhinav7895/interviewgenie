@@ -33,8 +33,6 @@ const Saved: React.FC = () => {
     const [filteredQuestions, setFilteredQuestions] = useState<SavedQuestion[]>([]);
     const [isDeleteAll, setIsDeleteAll] = useState(false);
 
-    console.log("saved questions" + savedQuestions);
-    
     const handleShowDelete = (id: string) => {
         setShowDelete(id);
     }

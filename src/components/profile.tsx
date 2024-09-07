@@ -16,8 +16,6 @@ import { useTheme } from 'next-themes';
 
 const Profile: React.FC = () => {
   const session = useSession();
-  console.log(session);
-
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);

@@ -26,7 +26,6 @@ const SavedQuestions = ({windowWidth} : {windowWidth : number}) => {
                 throw new Error('Failed to fetch saved questions');
             }
             const data: { success: boolean; savedQuestions: SavedQuestion[] } = await response.json();
-            console.log("data", data);
             setSavedQuestions(data.savedQuestions);
         } catch (error) {
             console.error('Error fetching saved questions:', error);
@@ -98,8 +97,6 @@ const History: React.FC<HistoryProps> = ({ id, text, handleCloseSidebar }) => {
     const handleDeleteQuestion = async () => {
         setIsDelete(true);
         try {
-            console.log("first", isDelete);
-
             const response = await fetch("/api/delete-saved-question", {
                 method: "POST",
                 headers: {
@@ -121,7 +118,6 @@ const History: React.FC<HistoryProps> = ({ id, text, handleCloseSidebar }) => {
         } finally {
             setIsDelete(false);
             setShowEditModal(false);
-            console.log("second", isDelete);
         }
     }
 

@@ -16,8 +16,7 @@ const generatePrompt = (
 ) => {
   let focusArea = questionType ? batchNumber === 1 ? `questions of type ${questionType}` : `practical questions of type ${questionType}` : batchNumber === 1 ? `a mix of technical` : `a mix of situational and behavioral`;
 
-  console.log(focusArea);
-  
+
   
   return `
 Generate 5 unique and diverse interview questions with their answers for a ${role}${
