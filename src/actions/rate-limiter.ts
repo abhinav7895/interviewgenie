@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { addHours, isAfter } from "date-fns";
 
-const RATE_LIMIT = 40;
+const RATE_LIMIT = 15;
 
 export const checkRateLimit = async (userId: string) => {
     try {
