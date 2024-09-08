@@ -9,10 +9,10 @@ import Link from 'next/link';
 import { IoBookmarksOutline } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { SavedQuestion } from '@/types/types';
-import { timeSince } from '@/constants/constant';
 import { MdDeleteOutline } from "react-icons/md";
 import { CreateIcon } from '@/components/ui/create-icon';
 import { RiLoader2Fill } from 'react-icons/ri';
+import { timeSince } from '@/lib/utils';
 RiLoader2Fill
 
 const fraunces = Fraunces({

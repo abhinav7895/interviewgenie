@@ -2,8 +2,8 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 import { checkRateLimit } from "@/actions/rate-limiter";
-import { generateBatch } from "@/utils/question-generator";
 import { InterviewResponse } from "@/types/types";
+import { generateBatch } from "@/lib/question-generator";
 
 export const POST = async (req: NextRequest) => {
   try {
