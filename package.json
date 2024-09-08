@@ -2,7 +2,10 @@
   "name": "interviewgenie",
   "version": "0.1.0",
   "author": "Abhinav Yadav",
-  "private": true,
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/abhinav7895/interviewgenie"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
