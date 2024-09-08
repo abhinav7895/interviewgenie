@@ -31,19 +31,6 @@ export default function Home() {
       <MaxWidthWrapper className="pt-[90px] sm:pt-[120px] px-3">
         <RadialGradient className="-z-10" />
         <div className="text-center mt-5 px-2.5 sm:mt-10  mx-auto">
-          {/* <div className="w-[170px] mb-7 mx-auto relative">
-            <div className="flex  flex-col absolute inset-x-0 items-center">
-              <div className="font-bold">#1 AI IQS</div>
-              <div className="flex gap-1">
-                <AiFillStar className="text-yellow-500" />
-                <AiFillStar className="text-yellow-500" />
-                <AiFillStar className="text-yellow-500" />
-                <AiFillStar className="text-yellow-500" />
-                <AiFillStar className="text-yellow-500" />
-              </div>
-            </div>
-            <img src="./flowers.svg" className="w-[170px]" alt="" />
-          </div> */}
           <h1 className={" text-2xl sm:text-3xl md:text-5xl  text-balance mb-8 " + fraunces.className}>Generate Interview Questions <br />
             <span className="text-green-500">10x Faster</span> with <span className="text-green-500">AI-Powered Precision</span></h1>
           <p className="text-balance text-base text-neutral-300 sm:text-xl mb-8">
@@ -159,6 +146,7 @@ export default function Home() {
           </div>
 
         </div>
+        
         <div className="bg-gradient-to-l my-20 sm:[150px] from-transparent via-green-300 dark:via-neutral-300 to-transparent w-full h-[1px] " />
         <footer className="  ">
           <div className="flex justify-between items-center">
