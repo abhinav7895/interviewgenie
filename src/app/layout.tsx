@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: "https://www.interviewgenie.live", 
     images: [
       {
-        url: "https://res.cloudinary.com/dt6kdmcjb/image/upload/v1725730067/yzloc5tsprdtzvklspeg.pngg", 
+        url: "./logo.png", 
         width: 1200,
         height: 630,
         alt: "InterviewGenie - AI-Powered Interview Preparation",
