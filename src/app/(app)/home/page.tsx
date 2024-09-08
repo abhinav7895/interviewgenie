@@ -113,8 +113,8 @@ const Home: React.FC = () => {
         <div className={`${isSidebarOpen ? "w-full md:w-[calc(100%-300px)]" : "w-full"} p-4 pt-16 sm:pt-8 flex justify-center md:items-center mt-4 md:mt-0`}>
           <div className='max-w-[700px] w-full'>
             {!interviewResponse && <div className='w-full flex justify-center pb-6 sm:pb-10'>
-              <div className="flex mx-auto items-center gap-1 px-2.5 sm:text-2xl">
-                <MdOutlineStreetview className='text-xl sm:text-2xl text-green-500' /> InterviewGenie
+              <div className="flex mx-auto items-center gap-1 px-2.5 text-2xl">
+                <MdOutlineStreetview className='text-2xl text-green-500' /> InterviewGenie
               </div>
             </div>}
             <form ref={formRef} className='flex bg-neutral-200 border border-neutral-300 dark:border-neutral-900 dark:bg-neutral-800 rounded-xl p-4  flex-col gap-2' onSubmit={handleSubmit}>
