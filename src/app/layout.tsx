@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
-
+import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -15,10 +15,10 @@ export const metadata: Metadata = {
     title: "InterviewGenie | Ace Your Next Interview",
     description: "Get ready for your job interview with AI-generated questions and answers tailored to your specific role and industry.",
     type: "website",
-    url: "https://www.interviewgenie.live", 
+    url: "https://www.interviewgenie.live",
     images: [
       {
-        url: "./logo.png", 
+        url: "./logo.png",
         width: 1200,
         height: 630,
         alt: "InterviewGenie - AI-Powered Interview Preparation",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   robots: "index, follow",
   viewport: "width=device-width, initial-scale=1",
-  themeColor: "#4ade80", 
+  themeColor: "#4ade80",
 };
 export default function RootLayout({
   children,
@@ -37,6 +37,7 @@ export default function RootLayout({
   return (
     <html className="dark" lang="en">
       <body className={inter.className + " bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100  min-h-screen"}>
+        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="dark" >
           <Toaster richColors position="top-right" />
           {children}
