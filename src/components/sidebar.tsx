@@ -98,10 +98,10 @@ const Sidebar = ({ className }: SidebarProps) => {
                             <IoBookmarks className='text-neutral-600 dark:text-neutral-400' />
                             Saved
                         </Link>
-                        <button className='flex items-center px-2 py-1 bg-neutral-50 bg-opacity-35 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 gap-3 text-neutral-600 dark:text-neutral-400 rounded-lg transition-all'>
+                        <Link href={"https://github.com/abhinav7895/interviewgenie"} className='flex items-center px-2 py-1 bg-neutral-50 bg-opacity-35 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 gap-3 text-neutral-600 dark:text-neutral-400 rounded-lg transition-all'>
                             <VscGithubInverted className='text-lg text-neutral-600 dark:text-neutral-400' />
                             Star on GitHub
-                        </button>
+                        </Link>
                     </div>
                     <SavedQuestions windowWidth={windowWidth} />
                     <Profile />
