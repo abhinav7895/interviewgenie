@@ -11,7 +11,8 @@ import { FiLogIn } from "react-icons/fi";
 
 const Navbar = () => {
     return (
-        <MaxWidthWrapper className='py-2 fixed bg-opacity-70 backdrop-blur-2xl inset-x-0 z-50 '>
+        <div className="fixed inset-x-0  z-50 bg-neutral-950 bg-opacity-70 backdrop-blur-2xl  ">
+        <MaxWidthWrapper className='py-2  '>
             <nav className='h-10 flex items-center justify-between bg-opacity-60 px-4 py-2'>
                 <div>
                     <MdOutlineStreetview className='text-4xl text-green-500' />
@@ -25,6 +26,7 @@ const Navbar = () => {
                 </div>
             </nav>
         </MaxWidthWrapper>
+        </div>
     )
 }
 
