@@ -146,6 +146,10 @@ export default function Home() {
           </div>
 
         </div>
+
+        <div>
+          
+        </div>
         
         <div className="bg-gradient-to-l my-20 sm:[150px] from-transparent via-green-300 dark:via-neutral-300 to-transparent w-full h-[1px] " />
         <footer className="  ">

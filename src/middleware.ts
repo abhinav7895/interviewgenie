@@ -5,8 +5,11 @@ export default auth((req) => {
   const isAuthenticated = !!req.auth;
   const pathname = req.nextUrl.pathname;
 
-
   // If the user is not authenticated and not on the signin page, redirect to signin
+  if (!isAuthenticated && pathname === "/") {
+    return NextResponse.next();
+  }
+
   if (!isAuthenticated && !pathname.startsWith("/signin")) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
@@ -24,5 +27,6 @@ export const config = {
   matcher: [
     "/home",
     "/signin",
+    "/"
   ],
 };
