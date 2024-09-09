@@ -31,14 +31,18 @@ export const POST = async (req: NextRequest) => {
       }, { status: 429 });
     }
 
-    const [batch1, batch2] = await Promise.all([
+    const [batch1, batch2, batch3, batch4] = await Promise.all([
       generateBatch(role, level, questionType, tone, jobDescription, 1),
+      generateBatch(role, level, questionType, tone, jobDescription, 1),
+      generateBatch(role, level, questionType, tone, jobDescription, 2),
       generateBatch(role, level, questionType, tone, jobDescription, 2)
     ]);
 
     const allQuestions = [
       ...batch1.questionsAndAnswers,
       ...batch2.questionsAndAnswers,
+      ...batch3.questionsAndAnswers,
+      ...batch4.questionsAndAnswers
     ];
 
     const finalResponse: InterviewResponse = {

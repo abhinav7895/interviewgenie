@@ -19,26 +19,22 @@ const generatePrompt = (
 
   
   return `
-Generate 5 unique and diverse interview questions with their answers for a ${role}${
+Generate 3 unique and diverse interview questions with their answers for a ${role}${
     level ? ` at ${level} level` : ""
   }.
 Focus on ${focusArea} questions.
 ${tone ? `The tone should be ${tone}.` : ""}
 ${jobDescription ? `Context: "${jobDescription}"` : ""}
 Ensure each question covers a distinct concept or skill within the ${focusArea} domain.
-Respond with a JSON object:
+Respond with a JSON object, for example:
 {
   "topic": "small topic summary",
   "questionsAndAnswers": [
-    {"id": "q${batchNumber! * 5 - 4}", "ques": "Question", "ans": "Answer of that ques."},
-    {"id": "q${batchNumber! * 5 - 3}", "ques": "Question", "ans": "Answer of that ques."},
-    {"id": "q${batchNumber! * 5 - 2}", "ques": "Question", "ans": "Answer of that ques."},
-    {"id": "q${batchNumber! * 5 - 1}", "ques": "Question", "ans": "Answer of that ques."},
-    {"id": "q${batchNumber! * 5}", "ques": "Question", "ans": "Answer of that ques."}
+    {"id": "q1", "ques": "What are the callback functions in JavaScript", "ans": "A callback function in JavaScript is a function that is passed as an argument to another function."},
   ]
 }
 Ensure:
-1. Valid JSON with 5 diverse questions/answers
+1. Valid JSON with 3 diverse questions/answers
 2. Short, clear answers
 3. Sequential IDs as shown above
 4. No formatting or extra characters
@@ -69,7 +65,7 @@ export const generateBatch = async (
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.8,
-      max_tokens: 1024,
+      max_tokens: 2048,
     });
   
     const response = completion.choices[0].message.content;
@@ -90,7 +86,7 @@ export const generateBatch = async (
     if (
       !parsedResponse.topic ||
       !Array.isArray(parsedResponse.questionsAndAnswers) ||
-      parsedResponse.questionsAndAnswers.length !== 5
+      parsedResponse.questionsAndAnswers.length !== 3
     ) {
       console.error(
         `Invalid response structure in batch ${batchNumber}:`,
