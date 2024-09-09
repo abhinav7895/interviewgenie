@@ -14,7 +14,7 @@ const generatePrompt = (
   jobDescription?: string,
   batchNumber?: number
 ) => {
-  let focusArea = questionType ? batchNumber === 1 ? `questions of type ${questionType}` : `practical questions of type ${questionType}` : batchNumber === 1 ? `a mix of technical` : `a mix of situational and behavioral`;
+  let focusArea = questionType ? batchNumber === 1 ? `verbal questions of type ${questionType}` : `practical questions of type ${questionType}` : batchNumber === 1 ? `a mix of technical` : `a mix of situational and behavioral`;
 
 
   
