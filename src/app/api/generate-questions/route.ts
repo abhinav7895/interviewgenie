@@ -33,11 +33,12 @@ export const POST = async (req: NextRequest) => {
 
     const [batch1] = await Promise.all([
       generateBatch(role, level, questionType, tone, jobDescription, 1),
+      generateBatch(role, level, questionType, tone, jobDescription, 2),
     ]);
 
     const allQuestions = [
       ...batch1.questionsAndAnswers,
-      // ...batch2.questionsAndAnswers,
+      ...batch2.questionsAndAnswers,
     ];
 
     const finalResponse: InterviewResponse = {
