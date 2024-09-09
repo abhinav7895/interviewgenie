@@ -28,7 +28,7 @@ ${jobDescription ? `Context: "${jobDescription}"` : ""}
 Ensure each question covers a distinct concept or skill within the ${focusArea} domain.
 Respond with a JSON object, for example:
 {
-  "topic": "small topic summary",
+  "topic": "Technical JavaScript Questions",
   "questionsAndAnswers": [
     {"id": "q1", "ques": "What are the callback functions in JavaScript", "ans": "A callback function in JavaScript is a ..."},
   ]
