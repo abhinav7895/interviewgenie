@@ -14,12 +14,12 @@ const generatePrompt = (
   jobDescription?: string,
   batchNumber?: number
 ) => {
-  let focusArea = questionType ? batchNumber === 1 ? `verbal questions of type ${questionType}` : `practical questions of type ${questionType}` : batchNumber === 1 ? `a mix of technical` : `a mix of situational and behavioral`;
+  let focusArea = questionType ? batchNumber === 1 ? `easy and starter questions of type ${questionType}` : `indepth questions of type ${questionType}` : batchNumber === 1 ? `a mix of technical` : `a mix of situational and behavioral`;
 
 
   
   return `
-Generate 4 unique and diverse interview questions with their answers for a ${role}${
+Generate 3 unique and diverse interview questions with their answers for a ${role}${
     level ? ` at ${level} level` : ""
   }.
 Focus on ${focusArea} questions.
@@ -34,7 +34,7 @@ Respond with a JSON object, for example:
   ]
 }
 Ensure:
-1. Must be Valid JSON with 4 diverse questions/answers
+1. Must be Valid JSON with 3 diverse questions/answers
 2. Short, clear answers
 3. Sequential IDs as shown above
 4. No formatting or extra characters
@@ -86,7 +86,7 @@ export const generateBatch = async (
     if (
       !parsedResponse.topic ||
       !Array.isArray(parsedResponse.questionsAndAnswers) ||
-      parsedResponse.questionsAndAnswers.length !== 4
+      parsedResponse.questionsAndAnswers.length !== 3
     ) {
       console.error(
         `Invalid response structure in batch ${batchNumber}:`,
