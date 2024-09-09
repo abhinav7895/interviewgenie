@@ -19,7 +19,7 @@ const generatePrompt = (
 
   
   return `
-Generate 4 unique and diverse interview questions with their answers for a ${role}${
+Generate 8 unique and diverse interview questions with their answers for a ${role}${
     level ? ` at ${level} level` : ""
   }.
 Focus on ${focusArea} questions.
@@ -30,11 +30,11 @@ Respond with a JSON object, for example:
 {
   "topic": "small topic summary",
   "questionsAndAnswers": [
-    {"id": "q1", "ques": "What are the callback functions in JavaScript", "ans": "A callback function in JavaScript is a function that is passed as an argument to another function."},
+    {"id": "q1", "ques": "What are the callback functions in JavaScript", "ans": "A callback function in JavaScript is a ..."},
   ]
 }
 Ensure:
-1. Valid JSON with 4 diverse questions/answers
+1. Must be Valid JSON with 8 diverse questions/answers
 2. Short, clear answers
 3. Sequential IDs as shown above
 4. No formatting or extra characters
@@ -65,13 +65,13 @@ export const generateBatch = async (
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.8,
-      max_tokens: 2048,
+      max_tokens: 1024,
     });
   
     const response = completion.choices[0].message.content;
   
     if (!response) {
-      throw new Error(`No response from OpenAI for batch ${batchNumber}`);
+      throw new Error(`No response}`);
     }
   
     let parsedResponse: InterviewResponse;
@@ -86,7 +86,7 @@ export const generateBatch = async (
     if (
       !parsedResponse.topic ||
       !Array.isArray(parsedResponse.questionsAndAnswers) ||
-      parsedResponse.questionsAndAnswers.length !== 4
+      parsedResponse.questionsAndAnswers.length !== 8
     ) {
       console.error(
         `Invalid response structure in batch ${batchNumber}:`,
