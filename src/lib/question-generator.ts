@@ -46,7 +46,6 @@ export const generateBatch = async (
     questionType,
     tone,
     jobDescription,
-    batchNumber!
   );
 
   const completion = await openai.chat.completions.create({
