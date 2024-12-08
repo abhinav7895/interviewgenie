@@ -5,7 +5,7 @@ const generatePrompt = (
     tone?: string,
     jobDescription?: string
   ) => {
-    return `Generate 8 interview questions with their answers for a ${role}${
+    return `Generate 6 interview questions with their answers for a ${role}${
       level ? ` at ${level} level` : ""
     }.
   ${tone ? `The tone should be ${tone}.` : ""}
