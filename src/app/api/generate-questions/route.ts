@@ -4,52 +4,58 @@ import { NextRequest } from "next/server";
 import { checkRateLimit } from "@/actions/rate-limiter";
 import { InterviewResponse } from "@/types/types";
 import { generateBatch } from "@/lib/question-generator";
+import { z } from "zod";
+import { createOpenAI } from "@ai-sdk/openai";
+import { generateObject, streamObject, streamText } from "ai";
+import generatePrompt from "@/lib/prompt-generator";
+
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const InterviewResponseSchema = z.object({
+  topic: z.string(),
+  questionsAndAnswers: z.array(
+    z.object({
+      id: z.string(),
+      ques: z.string(),
+      ans: z.string(),
+    })
+  ),
+});
 
 export const POST = async (req: NextRequest) => {
   try {
     const { role, level, questionType, tone, jobDescription } = await req.json();
-    const session = await auth();
-
-    if (!session?.user) {
-      return Response.json({ error: "Not authenticated" }, { status: 401 });
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+    const model = openai("gpt-4o", {
+      structuredOutputs: true,
+    });
+    const prompt = generatePrompt(role, level, questionType, tone, jobDescription);
+    const response = await streamObject({
+      model,
+      messages: [
+        {
+            role: 'system',
+            content: `You are assisting with generating interview questions for ${role} role`
+          },
+        {
+            role: 'user',
+            content: prompt
+        }
+    ],
+      schema: z.object({
+        topic: z.string(),
+        questionsAndAnswers: z.array(
+          z.object({
+            id: z.string(),
+            ques: z.string(),
+            ans: z.string(),
+          })
+        ),
+      }),
     });
 
-    if (!user) {
-      return Response.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const rateLimitResult = await checkRateLimit(user.id);
-
-    if (!rateLimitResult.allowed) {
-      return Response.json({
-        message: `You have exceeded the request limit. Please try again.`,
-        success: false,
-      }, { status: 429 });
-    }
-
-    const [batch1, batch2] = await Promise.all([
-      generateBatch(role, level, questionType, tone, jobDescription, 1),
-      generateBatch(role, level, questionType, tone, jobDescription, 2),
-    ]);
-
-    const allQuestions = [
-      ...batch1.questionsAndAnswers,
-      ...batch2.questionsAndAnswers,
-    ];
-
-    const finalResponse: InterviewResponse = {
-      topic: batch1.topic,
-      questionsAndAnswers: allQuestions,
-    };
-
-    return Response.json(
-      { success: true, message: finalResponse },
-      { status: 200 }
-    );
+    return response.toTextStreamResponse(); 
   } catch (error) {
     console.error("Error generating answer:", error);
     return Response.json(

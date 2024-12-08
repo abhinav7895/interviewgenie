@@ -84,11 +84,11 @@ const Home: React.FC = () => {
       });
 
       const data = await response.json();
-
-      if (data.success) {
-        setInterviewResponse(data.message);
+      console.log(data.topic)
+      if (data) {
+        setInterviewResponse(data);
       } else {
-        toast.warning(data.message ?? "Failed to generate questions")
+        toast.warning(data ?? "Failed to generate questions")
       }
     } catch (error) {
       console.error('Error:', error);

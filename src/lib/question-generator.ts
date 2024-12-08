@@ -5,27 +5,19 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-
 const generatePrompt = (
   role: string,
   level?: string,
   questionType?: string,
   tone?: string,
-  jobDescription?: string,
-  batchNumber?: number
+  jobDescription?: string
 ) => {
-  let focusArea = questionType ? batchNumber === 1 ? `easy and starter questions of type ${questionType}` : `indepth questions of type ${questionType}` : batchNumber === 1 ? `a mix of technical` : `a mix of situational and behavioral`;
-
-
-  
-  return `
-Generate 3 unique and diverse interview questions with their answers for a ${role}${
+  return `Generate 10 interview questions with their answers for a ${role}${
     level ? ` at ${level} level` : ""
   }.
-Focus on ${focusArea} questions.
 ${tone ? `The tone should be ${tone}.` : ""}
 ${jobDescription ? `Context: "${jobDescription}"` : ""}
-Ensure each question covers a distinct concept or skill within the ${focusArea} domain.
+${questionType ? `Type of the question : ${questionType}` : ""}
 Respond with a JSON object, for example:
 {
   "topic": "Technical JavaScript Questions",
@@ -34,69 +26,64 @@ Respond with a JSON object, for example:
   ]
 }
 Ensure:
-1. Must be Valid JSON with 3 diverse questions/answers
-2. Short, clear answers
-3. Sequential IDs as shown above
-4. No formatting or extra characters
-5. Questions are distinct from each other, both in wording and concept
-6. Question and Answer will too short and clear
+1. Short, clear answers
+2. No formatting or extra characters
+3. Question and Answer will too short and clear
 `;
 };
 
-
 export const generateBatch = async (
-    role: string,
-    level?: string,
-    questionType?: string,
-    tone?: string,
-    jobDescription?: string,
-    batchNumber?: number
-  ): Promise<InterviewResponse> => {
-    const prompt = generatePrompt(
-      role,
-      level,
-      questionType,
-      tone,
-      jobDescription,
-      batchNumber!
+  role: string,
+  level?: string,
+  questionType?: string,
+  tone?: string,
+  jobDescription?: string,
+  batchNumber?: number
+): Promise<InterviewResponse> => {
+  const prompt = generatePrompt(
+    role,
+    level,
+    questionType,
+    tone,
+    jobDescription,
+    batchNumber!
+  );
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.8,
+    max_tokens: 1024,
+  });
+
+  const response = completion.choices[0].message.content;
+
+  if (!response) {
+    throw new Error(`No response}`);
+  }
+
+  let parsedResponse: InterviewResponse;
+  try {
+    parsedResponse = JSON.parse(response);
+  } catch (error) {
+    console.error(`JSON parsing error in batch ${batchNumber}:`, error);
+    console.error("Raw response:", response);
+    throw new Error(`Invalid JSON response from AI in batch ${batchNumber}`);
+  }
+
+  if (
+    !parsedResponse.topic ||
+    !Array.isArray(parsedResponse.questionsAndAnswers) ||
+    parsedResponse.questionsAndAnswers.length !== 3
+  ) {
+    console.error(
+      `Invalid response structure in batch ${batchNumber}:`,
+      parsedResponse
     );
-  
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.8,
-      max_tokens: 1024,
-    });
-  
-    const response = completion.choices[0].message.content;
-  
-    if (!response) {
-      throw new Error(`No response}`);
-    }
-  
-    let parsedResponse: InterviewResponse;
-    try {
-      parsedResponse = JSON.parse(response);
-    } catch (error) {
-      console.error(`JSON parsing error in batch ${batchNumber}:`, error);
-      console.error("Raw response:", response);
-      throw new Error(`Invalid JSON response from AI in batch ${batchNumber}`);
-    }
-  
-    if (
-      !parsedResponse.topic ||
-      !Array.isArray(parsedResponse.questionsAndAnswers) ||
-      parsedResponse.questionsAndAnswers.length !== 3
-    ) {
-      console.error(
-        `Invalid response structure in batch ${batchNumber}:`,
-        parsedResponse
-      );
-      throw new Error(
-        `Invalid response structure from AI in batch ${batchNumber}`
-      );
-    }
-  
-    return parsedResponse;
-  };
-  
+    throw new Error(
+      `Invalid response structure from AI in batch ${batchNumber}`
+    );
+  }
+
+  return parsedResponse;
+};
