@@ -3,7 +3,7 @@ import { HiOutlineClipboard, HiOutlineClipboardCheck, HiOutlineDownload } from '
 import { Fraunces } from 'next/font/google';
 import { jsPDF } from 'jspdf';
 import { RiLoader2Fill } from 'react-icons/ri';
-import {  IoShareOutline } from 'react-icons/io5';
+import { IoShareOutline } from 'react-icons/io5';
 import { InterviewResponse } from '@/types/types';
 import SaveQuestions from './save-question';
 import ShareQuestion from './share-question';
@@ -23,10 +23,10 @@ interface QuestionsProps {
     isLoading: boolean;
     isSave?: boolean
     id?: string
-    forShare ?: boolean
+    forShare?: boolean, includeAnswer?: "false" | "true"
 }
 
-const Questions: React.FC<QuestionsProps> = ({ interviewResponse, role, isLoading, isSave, id, forShare = false }) => {
+const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer, role, isLoading, isSave, id, forShare = false }) => {
     const [showAnswer, setShowAnswer] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
@@ -68,9 +68,11 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, role, isLoadin
             doc.setFontSize(10);
             doc.setTextColor(100, 100, 100);
 
+           if(interviewResponse.queryInfo.includeAnswer === "true") {
             const answerLines = doc.splitTextToSize(`Answer: ${ans}`, pageWidth - 2 * margin);
             doc.text(answerLines, margin, y);
             y += answerLines.length * 5 + 5;
+           }
 
             if (y > 270) {
                 doc.addPage();
@@ -129,14 +131,14 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, role, isLoadin
                             <IoShareOutline />
                         </ShareQuestion>}
                     </div>
-                    <div>
+                    {interviewResponse.queryInfo.includeAnswer=== "true" && <div>
                         <button
                             className='flex text-green-800 dark:text-neutral-300 bg-green-200 dark:bg-neutral-700  border-green-300 dark:border-neutral-500 hover:border-green-400 dark:hover:border-neutral-400 w-[110px] h-[25px] justify-center rounded-md items-center transition-all gap-1 border text-sm'
                             onClick={handleShowAnswer}
                         >
                             {showAnswer ? "Hide" : "Show"} Answer
                         </button>
-                    </div>
+                    </div>}
                 </div>
                 <div className='py-4'>
                     <h2 className={`text-xl text-green-900 dark:text-neutral-400 sm:text-2xl font-light ${fraunces.className}`}>{interviewResponse.topic}</h2>

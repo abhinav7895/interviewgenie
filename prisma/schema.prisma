@@ -24,6 +24,7 @@ model Question {
   id             String   @id @default(cuid())
   userId         String
   role           String
+  includeAnswer  String?  
   level          String?
   questionType   String?
   tone           String?

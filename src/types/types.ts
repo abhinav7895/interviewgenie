@@ -18,19 +18,21 @@ export interface FormData {
   questionType?: string;
   tone?: string;
   jobDescription?: string;
+  includeAnswer ?: "true" | "false"
 }
 
 
 export interface QuestionAnswer {
   id: string;
   ques: string;
-  ans: string;
+  ans?: string;
 }
 
 export interface InterviewResponse {
   id ?: string,
   topic: string;
   questionsAndAnswers: QuestionAnswer[];
+  queryInfo : FormData
 }
 
 

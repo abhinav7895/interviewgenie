@@ -1,18 +1,16 @@
 "use client"
 
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import Sidebar from '@/components/sidebar';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select';
 import AnimatedSparkle from '@/components/ui/animated-sparkle';
 import { toast } from 'sonner';
 import Questions from '@/components/questions-box';
 import { Fraunces } from 'next/font/google';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { form, useInterviewContext } from '@/context/question-answer-context';
 import { useAppContext } from '@/context/app-context';
 import { MdOutlineStreetview } from 'react-icons/md';
-
+import { Checkbox } from '@/components/ui/checkbox';
 
 
 
@@ -70,7 +68,6 @@ const Home: React.FC = () => {
 
     setIsLoading(true);
 
-
     try {
       const response = await fetch('/api/generate-questions', {
         method: 'POST',
@@ -84,9 +81,9 @@ const Home: React.FC = () => {
       });
 
       const data = await response.json();
-      console.log(data.topic)
+
       if (data) {
-        setInterviewResponse(data);
+        setInterviewResponse({...data, queryInfo:formData});
       } else {
         toast.warning(data ?? "Failed to generate questions")
       }
@@ -138,7 +135,7 @@ const Home: React.FC = () => {
                   />
                 </div>
                 <Select onValueChange={(value: string) => handleSelectChange('level', value)}>
-                  <SelectTrigger className="w-full sm:w-1/2 text-neutral-600 bg-neutral-100 dark:bg-neutral-700 outline-0 ring-0 border border-neutral-200 dark:border-neutral-600 hover:border-neutral-400 dark:hover:border-neutral-500 active:border-neutral-500 placeholder:text-neutral-400 dark:placeholder:text-neutral-300 text-neutral-400 dark:text-neutral-200">
+                  <SelectTrigger className="w-full sm:w-1/2 bg-neutral-100 dark:bg-neutral-700 outline-0 ring-0 border border-neutral-200 dark:border-neutral-600 hover:border-neutral-400 dark:hover:border-neutral-500 active:border-neutral-500 placeholder:text-neutral-400 dark:placeholder:text-neutral-300 text-neutral-400 dark:text-neutral-200">
                     <SelectValue placeholder="Level (Optional)" />
                   </SelectTrigger>
                   <SelectContent>
@@ -181,7 +178,7 @@ const Home: React.FC = () => {
               <div>
                 <label htmlFor="job-description" className='sr-only'>Job Description</label>
                 <textarea
-                  className='rounded-md w-full bg-neutral-100 dark:bg-neutral-700 outline-0 ring-0 border border-neutral-200 dark:border-neutral-600 hover:border-neutral-400 dark:hover:border-neutral-500 active:border-neutral-500 placeholder:text-neutral-400 dark:placeholder:text-neutral-300 dark:text-neutral-200 text-sm py-2 px-3'
+                  className='rounded-md w-full bg-neutral-100 dark:bg-neutral-700 outline-0 ring-0 border border-neutral-200 dark:border-neutral-600 hover:border-neutral-400 dark:hover:border-neutral-500 active:border-neutral-500 placeholder:text-neutral-400 dark:placeholder:text-neutral-300 dark:text-neutral-200 text-sm pt-2 px-3'
                   name="jobDescription"
                   id="job-description"
                   cols={30}
@@ -191,6 +188,19 @@ const Home: React.FC = () => {
                   value={formData.jobDescription}
                 ></textarea>
               </div>
+              <div className='flex gap-2 select-none text-sm pb-2 text-neutral-300 items-center'>
+                <Checkbox
+                  id='include-answer'
+                  checked={formData.includeAnswer === "true"}
+                  onCheckedChange={(checked) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      includeAnswer: checked ? "true" : "false"
+                    }))
+                  }}
+                />
+                <label htmlFor="include-answer">Include Answers</label>
+              </div>
               <button
                 type='submit'
                 className='flex px-2.5 py-2 border bg-gradient-to-b from-green-600 to-green-900 w-fit rounded-md items-center gap-1 active:scale-95 transition-all text-white '
@@ -199,7 +209,7 @@ const Home: React.FC = () => {
                 {isLoading ? 'Generating...' : 'Generate'} <AnimatedSparkle animate={isLoading ? true : false} size={20} color='white' />
               </button>
             </form>
-            <Questions isLoading={isLoading} role={formData.role} interviewResponse={interviewResponse} />
+            <Questions includeAnswer={formData.includeAnswer} isLoading={isLoading} role={formData.role} interviewResponse={interviewResponse} />
           </div>
         </div>
       </div>

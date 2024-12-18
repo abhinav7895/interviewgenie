@@ -9,6 +9,7 @@ export const form = {
   questionType: '',
   tone: '',
   jobDescription: '',
+  includeAnswer : "false" as "false"
 }
 
 interface InterviewContextType {

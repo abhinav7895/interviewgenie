@@ -13,49 +13,46 @@ const openai = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const InterviewResponseSchema = z.object({
-  topic: z.string(),
-  questionsAndAnswers: z.array(
-    z.object({
-      id: z.string(),
-      ques: z.string(),
-      ans: z.string(),
-    })
-  ),
-});
-
 export const POST = async (req: NextRequest) => {
   try {
-    const { role, level, questionType, tone, jobDescription } = await req.json();
+    const { role, level, questionType, tone, jobDescription, includeAnswer } =
+      await req.json();
     const model = openai("gpt-4o", {
       structuredOutputs: true,
     });
-    const prompt = generatePrompt(role, level, questionType, tone, jobDescription);
+    const prompt = generatePrompt(
+      role,
+      level,
+      questionType,
+      tone,
+      jobDescription,
+      includeAnswer
+    );
     const response = await streamObject({
       model,
       messages: [
         {
-            role: 'system',
-            content: `You are assisting with generating interview questions for ${role} role`
-          },
+          role: "system",
+          content: `You are assisting with generating interview questions for ${role} role`,
+        },
         {
-            role: 'user',
-            content: prompt
-        }
-    ],
+          role: "user",
+          content: prompt,
+        },
+      ],
       schema: z.object({
         topic: z.string(),
         questionsAndAnswers: z.array(
           z.object({
             id: z.string(),
             ques: z.string(),
-            ans: z.string(),
+            ...(includeAnswer === "true" && { ans: z.string() }),
           })
         ),
       }),
     });
 
-    return response.toTextStreamResponse(); 
+    return response.toTextStreamResponse();
   } catch (error) {
     console.error("Error generating answer:", error);
     return Response.json(

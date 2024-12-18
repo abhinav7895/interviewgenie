@@ -30,12 +30,13 @@ export async function GET(
     const transformedResponse = {
       topic: question.content,
       id : question.id,
-      questionsAndAnswers: question.answers.map((answer) => {
+      includeAnswer : question.includeAnswer,
+      [question.includeAnswer ? "questionsAndAnswers" : "questions"]: question.answers.map((answer) => {
         const parsedAns = JSON.parse(answer.content);
         return {
           id: answer.id,
           ques: parsedAns.question,
-          ans: parsedAns.answer,
+          ...question.includeAnswer && {ans: parsedAns.answer},
         };
       }),
     };
