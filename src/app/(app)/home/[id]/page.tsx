@@ -14,14 +14,12 @@ interface SavedQuestionProps {
 }
 
 export default function SavedQuestion({ params }: SavedQuestionProps) {
-  const session = useSession();
-  const router = useRouter();
   const { isSidebarOpen } = useAppContext();
+  const [error, setError] = useState<string | null>(null);
   
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
   const [interviewResponse, setInterviewResponse] = useState<InterviewResponse | null>(null);
-  const [error, setError] = useState('');
 
   const transformApiResponse = (apiResponse: any): InterviewResponse => {
     const queryInfo: FormData = {
@@ -60,7 +58,7 @@ export default function SavedQuestion({ params }: SavedQuestionProps) {
       setRole(transformedResponse.queryInfo.role);
     } catch (error) {
       console.error('Error fetching question data:', error);
-      setError('Failed to load question data. Please try again.');
+      setError("Failed to load question data. Please try again.")
     } finally {
       setIsLoading(false);
     }
@@ -85,6 +83,7 @@ export default function SavedQuestion({ params }: SavedQuestionProps) {
               isLoading={isLoading} 
               role={role} 
               interviewResponse={interviewResponse} 
+              error={error}
             />
           </div>
         </div>

@@ -11,6 +11,7 @@ import { form, useInterviewContext } from '@/context/question-answer-context';
 import { useAppContext } from '@/context/app-context';
 import { MdOutlineStreetview } from 'react-icons/md';
 import { Checkbox } from '@/components/ui/checkbox';
+import { error } from 'console';
 
 
 
@@ -27,7 +28,7 @@ const Home: React.FC = () => {
 
   const session = useSession()
   const formRef = useRef<HTMLFormElement | null>(null);
-
+  const [error, setError] = useState<string | null>(null);
   const { interviewResponse, setInterviewResponse, formData, setFormData } = useInterviewContext();
   const { isSidebarOpen } = useAppContext();
 
@@ -89,7 +90,7 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error("An error occurred while generating questions")
+      setError("An error occurred while generating questions")
     } finally {
       setIsLoading(false);
     }
@@ -209,7 +210,7 @@ const Home: React.FC = () => {
                 {isLoading ? 'Generating...' : 'Generate'} <AnimatedSparkle animate={isLoading ? true : false} size={20} color='white' />
               </button>
             </form>
-            <Questions includeAnswer={formData.includeAnswer} isLoading={isLoading} role={formData.role} interviewResponse={interviewResponse} />
+            <Questions error={error} includeAnswer={formData.includeAnswer} isLoading={isLoading} role={formData.role} interviewResponse={interviewResponse} />
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { IoShareOutline } from 'react-icons/io5';
 import { InterviewResponse } from '@/types/types';
 import SaveQuestions from './save-question';
 import ShareQuestion from './share-question';
+import ErrorMessage from './error-message';
 
 const fraunces = Fraunces({
     weight: [
@@ -23,15 +24,15 @@ interface QuestionsProps {
     isLoading: boolean;
     isSave?: boolean
     id?: string
-    forShare?: boolean, includeAnswer?: "false" | "true"
+    forShare?: boolean, includeAnswer?: "false" | "true",
+    error: string | null
 }
 
-const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer, role, isLoading, isSave, id, forShare = false }) => {
+const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer, role, isLoading, isSave, id, error = "dfd", forShare = false }) => {
     const [showAnswer, setShowAnswer] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
     const handleShowAnswer = () => setShowAnswer(!showAnswer);
-    console.log(interviewResponse)
     const copyToClipboard = useCallback(() => {
         if (copySuccess) return;
         const textToCopy = interviewResponse?.questionsAndAnswers?.map(({ ques, ans }, index) =>
@@ -106,6 +107,10 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer,
 
     if (isLoading) {
         return <QuestionShimmer />;
+    }
+
+    if (error) {
+        return <ErrorMessage message={error} />
     }
 
     return (
