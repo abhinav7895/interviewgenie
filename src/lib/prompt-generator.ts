@@ -1,4 +1,4 @@
-const generatePrompt = (
+export const generatePrompt = (
   role: string,
   level?: string,
   questionType?: string,
@@ -28,5 +28,3 @@ Ensure:
   }
 `;
 };
-
-export default generatePrompt;

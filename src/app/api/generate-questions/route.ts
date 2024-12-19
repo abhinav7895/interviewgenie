@@ -1,13 +1,8 @@
-import { auth } from "@/auth";
-import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
-import { checkRateLimit } from "@/actions/rate-limiter";
-import { InterviewResponse } from "@/types/types";
-import { generateBatch } from "@/lib/question-generator";
 import { z } from "zod";
 import { createOpenAI } from "@ai-sdk/openai";
-import { generateObject, streamObject, streamText } from "ai";
-import generatePrompt from "@/lib/prompt-generator";
+import {  streamObject, } from "ai";
+import { generatePrompt } from "@/lib/prompt-generator";
 
 const openai = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY,

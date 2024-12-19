@@ -7,19 +7,21 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-
     const session = await auth();
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-  
 
     const id = params.id;
     const question = await prisma.question.findUnique({
       where: { id },
       include: { answers: true },
     });
-
+    console.log(
+      "all question",
+      await prisma.question.findMany({ where: { level: null } })
+    );
+    console.log("question", question);
     if (!question) {
       return NextResponse.json(
         { error: "Question not found" },
@@ -29,16 +31,18 @@ export async function GET(
 
     const transformedResponse = {
       topic: question.content,
-      id : question.id,
-      includeAnswer : question.includeAnswer,
-      [question.includeAnswer ? "questionsAndAnswers" : "questions"]: question.answers.map((answer) => {
-        const parsedAns = JSON.parse(answer.content);
-        return {
-          id: answer.id,
-          ques: parsedAns.question,
-          ...question.includeAnswer && {ans: parsedAns.answer},
-        };
-      }),
+      id: question.id,
+      includeAnswer: question.includeAnswer,
+      role : question.role,
+      [question.includeAnswer ? "questionsAndAnswers" : "questions"]:
+        question.answers.map((answer) => {
+          const parsedAns = JSON.parse(answer.content);
+          return {
+            id: answer.id,
+            ques: parsedAns.question,
+            ...(question.includeAnswer && { ans: parsedAns.answer }),
+          };
+        }),
     };
 
     return NextResponse.json(

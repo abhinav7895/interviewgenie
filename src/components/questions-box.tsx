@@ -31,7 +31,7 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer,
     const [copySuccess, setCopySuccess] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
     const handleShowAnswer = () => setShowAnswer(!showAnswer);
-
+    console.log(interviewResponse)
     const copyToClipboard = useCallback(() => {
         if (copySuccess) return;
         const textToCopy = interviewResponse?.questionsAndAnswers?.map(({ ques, ans }, index) =>
@@ -68,11 +68,11 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer,
             doc.setFontSize(10);
             doc.setTextColor(100, 100, 100);
 
-           if(interviewResponse.queryInfo.includeAnswer === "true") {
-            const answerLines = doc.splitTextToSize(`Answer: ${ans}`, pageWidth - 2 * margin);
-            doc.text(answerLines, margin, y);
-            y += answerLines.length * 5 + 5;
-           }
+            if (interviewResponse.queryInfo.includeAnswer === "true") {
+                const answerLines = doc.splitTextToSize(`Answer: ${ans}`, pageWidth - 2 * margin);
+                doc.text(answerLines, margin, y);
+                y += answerLines.length * 5 + 5;
+            }
 
             if (y > 270) {
                 doc.addPage();
@@ -131,7 +131,7 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer,
                             <IoShareOutline />
                         </ShareQuestion>}
                     </div>
-                    {interviewResponse.queryInfo.includeAnswer=== "true" && <div>
+                    {interviewResponse.queryInfo.includeAnswer === "true" && <div>
                         <button
                             className='flex text-green-800 dark:text-neutral-300 bg-green-200 dark:bg-neutral-700  border-green-300 dark:border-neutral-500 hover:border-green-400 dark:hover:border-neutral-400 w-[110px] h-[25px] justify-center rounded-md items-center transition-all gap-1 border text-sm'
                             onClick={handleShowAnswer}
