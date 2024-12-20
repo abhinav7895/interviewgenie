@@ -28,6 +28,7 @@ export async function GET(
       topic: question.content,
       id: question.id,
       includeAnswer: question.includeAnswer,
+      shareHash : question.shareHash,
       role : question.role,
       [question.includeAnswer ? "questionsAndAnswers" : "questions"]:
         question.answers.map((answer) => {

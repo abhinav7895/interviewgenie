@@ -8,6 +8,8 @@ import { InterviewResponse } from '@/types/types';
 import SaveQuestions from './save-question';
 import ShareQuestion from './share-question';
 import ErrorMessage from './error-message';
+import { twMerge } from 'tailwind-merge';
+import { toast } from 'sonner';
 
 const fraunces = Fraunces({
     weight: [
@@ -95,6 +97,26 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer,
         }, 2000);
     }
 
+    const getCurrentURL = useCallback(() => {
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const baseURL = `${url.protocol}//${url.hostname}${url.port ? ":" + url.port : ""
+            }`;
+
+        return baseURL;
+    }, [])
+
+    const handleShareQuestion = useCallback( async () => {
+        try {
+            const currentUrl = getCurrentURL();
+            navigator.clipboard.writeText(`${currentUrl}/share/${interviewResponse?.shareHash}`)
+            toast.success("Share link copied");
+        } catch (error) {
+            toast.error("Please try again!");
+            console.log(error);
+        }
+    }, [interviewResponse]);
+
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
         if (isDownloading) {
@@ -132,9 +154,11 @@ const Questions: React.FC<QuestionsProps> = ({ interviewResponse, includeAnswer,
                         >
                             {isDownloading ? <RiLoader2Fill className='animate-spin' /> : <HiOutlineDownload />}
                         </button>
-                        {id && !forShare && <ShareQuestion id={id} className='flex  text-green-800 dark:text-neutral-300 bg-green-200 dark:bg-neutral-700  border-green-300 dark:border-neutral-500 hover:border-green-400 dark:hover:border-neutral-400 items-center active:scale-90 p-1 transition-all border w-[30px] h-[25px] rounded-md justify-center'>
-                            <IoShareOutline />
-                        </ShareQuestion>}
+                        {id && !forShare &&
+                            <button onClick={handleShareQuestion} className={twMerge("flex justify-center items-center", "flex  text-green-800 dark:text-neutral-300 bg-green-200 dark:bg-neutral-700  border-green-300 dark:border-neutral-500 hover:border-green-400 dark:hover:border-neutral-400 items-center active:scale-90 p-1 transition-all border w-[30px] h-[25px] rounded-md justify-center")}>
+                                <IoShareOutline />
+                            </button>
+}
                     </div>
                     {interviewResponse.queryInfo.includeAnswer === "true" && <div>
                         <button

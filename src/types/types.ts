@@ -31,6 +31,7 @@ export interface QuestionAnswer {
 export interface InterviewResponse {
   id ?: string,
   topic: string;
+  shareHash ?: string
   questionsAndAnswers: QuestionAnswer[];
   queryInfo : FormData
 }
