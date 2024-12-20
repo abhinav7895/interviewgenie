@@ -1,7 +1,7 @@
 "use client"
 
 import Questions from '@/components/questions-box';
-import { InterviewResponse } from '@/types/types';
+import { InterviewResponse, FormData } from '@/types/types';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { LuLoader2 } from 'react-icons/lu';
@@ -11,19 +11,45 @@ const Share = ({ params }: { params: { id: string } }) => {
   const id = params.id;
   const [interviewResponse, setInterviewResponse] = useState<InterviewResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+
+  const transformApiResponse = (apiResponse: any): InterviewResponse => {
+    const queryInfo: FormData = {
+      role: apiResponse.role,
+      includeAnswer: apiResponse.includeAnswer as "true" | "false"
+    };
+
+    const transformedData: InterviewResponse = {
+      id: apiResponse.id,
+      topic: apiResponse.topic,
+      questionsAndAnswers: apiResponse.questionsAndAnswers.map((qa: any) => ({
+        id: qa.id,
+        ques: qa.ques,
+        ans: qa.ans
+      })),
+      queryInfo: queryInfo
+    };
+
+    return transformedData;
+  };
+
 
   const fetchQuestion = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(`/api/share-question/${id}`)
-      const data = await response.json();
-      if (data.success) {
-        setInterviewResponse(data.data);
+      const responseData = await response.json();
+      if (responseData.success) {
+        const transformedResponse = transformApiResponse(responseData.data);
+        console.log(transformedResponse)
+        setInterviewResponse(transformedResponse);
       }
 
 
     } catch (error) {
       console.log(error);
+      setError("Failed to load question data. Please try again.")
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +82,7 @@ const Share = ({ params }: { params: { id: string } }) => {
               <div className="relative"><div className={"size-[6px] sm:size-[8px] rounded-full bg-green-500 "}></div><div className={"size-[6px] sm:size-[8px] rounded-full inset-0  absolute animate-ping bg-green-500 "}></div></div>  Get Started With InterviewGenie <MdArrowOutward />
             </Link>}
           </div>
-          <Questions forShare={true} id={interviewResponse?.id} interviewResponse={interviewResponse} isSave={true} isLoading={false} />
+          <Questions error={error} forShare={true} id={interviewResponse?.id} interviewResponse={interviewResponse} isSave={true} isLoading={false} />
         </>
       </div>
       <footer className='max-w-[700px] w-full' >

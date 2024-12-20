@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -17,6 +18,8 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+
+    const shareHash = uuidv4();
     const question = await prisma.question.create({
       data: {
         userId: user.id,
@@ -28,6 +31,7 @@ export async function POST(request: Request) {
         ...(queryInfo.jobDescription && {
           jobDescription: queryInfo.jobDescription,
         }),
+        shareHash,
         content: topic,
         answers: {
           create: questionsAndAnswers.map((qa: any) => ({
@@ -51,6 +55,7 @@ export async function POST(request: Request) {
           id: question.id,
           content: question.content,
           createdAt: question.createdAt,
+          shareHash
         },
       },
       { status: 201 }

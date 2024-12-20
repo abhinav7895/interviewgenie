@@ -40,4 +40,5 @@ export interface SavedQuestion {
   id: string;
   content: string;
   createdAt: string;
+  shareHash : string;
 }

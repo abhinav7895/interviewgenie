@@ -12,9 +12,11 @@ import { motion } from 'framer-motion'
 import ShareQuestion from './share-question'
 import { RiLoader2Fill } from 'react-icons/ri'
 import { useAppContext } from '@/context/app-context'
+import { twMerge } from 'tailwind-merge'
+import { toast } from 'sonner'
 
 
-const SavedQuestions = ({windowWidth} : {windowWidth : number}) => {
+const SavedQuestions = ({ windowWidth }: { windowWidth: number }) => {
     const { savedQuestions, setSavedQuestions } = useInterviewContext();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const { setSidebarIsOpen } = useAppContext();
@@ -33,7 +35,7 @@ const SavedQuestions = ({windowWidth} : {windowWidth : number}) => {
             setIsLoading(false);
         }
     }, []);
-    
+
     const handleCloseSidebar = () => {
         if (windowWidth < 600) {
             setSidebarIsOpen(false);
@@ -59,6 +61,7 @@ const SavedQuestions = ({windowWidth} : {windowWidth : number}) => {
                                 key={question.id}
                                 id={question.id}
                                 text={question.content}
+                                shareHash={question.shareHash}
                                 handleCloseSidebar={handleCloseSidebar}
                             />
                         ))}
@@ -76,10 +79,11 @@ export default SavedQuestions
 interface HistoryProps {
     id: string;
     text: string;
-    handleCloseSidebar : () => void
+    handleCloseSidebar: () => void
+    shareHash: string
 }
 
-const History: React.FC<HistoryProps> = ({ id, text, handleCloseSidebar }) => {
+const History: React.FC<HistoryProps> = ({ id, text, handleCloseSidebar, shareHash }) => {
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const modalRef = useRef<HTMLDivElement>(null);
@@ -121,7 +125,27 @@ const History: React.FC<HistoryProps> = ({ id, text, handleCloseSidebar }) => {
         }
     }
 
+    const getCurrentURL = useCallback(() => {
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const baseURL = `${url.protocol}//${url.hostname}${url.port ? ":" + url.port : ""
+            }`;
+    
+        return baseURL;
+    }, []);
+    
 
+    const handleShareQuestion = async () => {
+        try {
+
+            const currentUrl = getCurrentURL();
+            navigator.clipboard.writeText(`${currentUrl}/share/${shareHash}`)
+            toast.success("Share link copied");
+        } catch (error) {
+            console.log(error);
+            toast.error("Please try again!");
+        } 
+    }
 
 
 
@@ -164,9 +188,10 @@ const History: React.FC<HistoryProps> = ({ id, text, handleCloseSidebar }) => {
                     ref={modalRef}
                     className='absolute -right-[90px] top-full mt-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700 z-[9999] p-3 flex flex-col gap-2'
                 >
-                    <ShareQuestion id={id} className='flex text-sm rounded-lg w-[88px] h-[30px] items-center gap-1 px-3 py-2 bg-neutral-200 text-neutral-600 dark:text-neutral-200 border-neutral-300 dark:bg-neutral-700 border dark:border-neutral-600 hover:border-neutral-500'>
-                        <IoShareOutline /> Share
-                    </ShareQuestion>
+
+                    <button  onClick={handleShareQuestion} className={twMerge("flex justify-center items-center", "flex text-sm rounded-lg w-[88px] h-[30px] items-center gap-1 px-3 py-2 bg-neutral-200 text-neutral-600 dark:text-neutral-200 border-neutral-300 dark:bg-neutral-700 border dark:border-neutral-600 hover:border-neutral-500")}>
+                    <IoShareOutline /> Share
+                    </button>
                     <button onClick={handleDeleteQuestion} className={`flex text-sm w-[88px] rounded-lg items-center gap-1 px-3 py-2 h-[30px] dark:text-neutral-200 bg-red-200 text-red-600 border-red-300 hover:border-red-400 dark:bg-red-800 dark:bg-opacity-70 border dark:border-red-900  dark:hover:border-red-800 ${isDelete ? "opacity-70" : ""}`}>
                         {isDelete ? <RiLoader2Fill className="text-sm animate-spin" /> : <MdDeleteOutline className='text-[16px]' />} Delete
                     </button>

@@ -22,6 +22,7 @@ export async function GET(
     const transformedResponse = {
       topic: question.content,
       id : question.id,
+      includeAnswer : question.includeAnswer, 
       questionsAndAnswers: question.answers.map((answer) => {
         const parsedAns = JSON.parse(answer.content);
         return {

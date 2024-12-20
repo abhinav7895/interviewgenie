@@ -17,11 +17,6 @@ export async function GET(
       where: { id },
       include: { answers: true },
     });
-    console.log(
-      "all question",
-      await prisma.question.findMany({ where: { level: null } })
-    );
-    console.log("question", question);
     if (!question) {
       return NextResponse.json(
         { error: "Question not found" },

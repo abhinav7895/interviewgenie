@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
   try {
     const queryOptions: {
       where: { userId: string };
-      select: { id: true; content: true; createdAt: true };
+      select: { id: true; content: true; createdAt: true, shareHash : true };
       orderBy: { createdAt: 'desc' };
       take?: number;
     } = {
@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
         id: true,
         content: true,
         createdAt: true,
+        shareHash : true
       },
       orderBy: {
         createdAt: 'desc',
