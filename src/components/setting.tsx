@@ -69,13 +69,8 @@ const Setting: React.FC<SettingProps> = ({ showSetting, setShowSetting }) => {
   };
 
   const handleActiveTab = useCallback((tab: "profile" | "account") => {
-    console.log('Changing tab to:', tab);
     setActiveTab(tab);
   }, []);
-
-  useEffect(() => {
-    console.log('Active tab changed to:', activeTab);
-  }, [activeTab]);
 
   const TabButton: React.FC<{ tab: 'profile' | 'account' }> = ({ tab }) => (
     <button 

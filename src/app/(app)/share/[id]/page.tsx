@@ -42,7 +42,6 @@ const Share = ({ params }: { params: { id: string } }) => {
       const responseData = await response.json();
       if (responseData.success) {
         const transformedResponse = transformApiResponse(responseData.data);
-        console.log(transformedResponse)
         setInterviewResponse(transformedResponse);
       } else {
         throw new Error(responseData.error)
