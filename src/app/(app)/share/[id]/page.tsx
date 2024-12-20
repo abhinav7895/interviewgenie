@@ -44,12 +44,12 @@ const Share = ({ params }: { params: { id: string } }) => {
         const transformedResponse = transformApiResponse(responseData.data);
         console.log(transformedResponse)
         setInterviewResponse(transformedResponse);
+      } else {
+        throw new Error(responseData.error)
       }
-
-
     } catch (error) {
       console.log(error);
-      setError("Failed to load question data. Please try again.")
+      setError(error instanceof Error ? error.message : 'An unexpected error occurred')
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +58,8 @@ const Share = ({ params }: { params: { id: string } }) => {
     fetchQuestion();
   }, [])
 
-  if (!interviewResponse) {
+  if (!isLoading && !error) {
+    console.log({error})
     return (
       <div className='min-h-screen bg-neutral-50 dark:bg-neutral-950 w-screen flex  items-center justify-center'>
         <div className='w-full  flex flex-col  items-center my-10'>

@@ -14,7 +14,7 @@ export async function GET(
 
     if (!question) {
       return NextResponse.json(
-        { error: "Question not found" },
+        { error: "Question not found", success : false },
         { status: 404 }
       );
     }
