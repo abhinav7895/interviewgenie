@@ -57,8 +57,7 @@ const Share = ({ params }: { params: { id: string } }) => {
     fetchQuestion();
   }, [])
 
-  if (!isLoading && !error) {
-    console.log({error})
+  if (isLoading) {
     return (
       <div className='min-h-screen bg-neutral-50 dark:bg-neutral-950 w-screen flex  items-center justify-center'>
         <div className='w-full  flex flex-col  items-center my-10'>
