@@ -30,6 +30,7 @@ export default function SavedQuestion({ params }: SavedQuestionProps) {
     const transformedData: InterviewResponse = {
       id: apiResponse.id,
       topic: apiResponse.topic,
+      shareHash : apiResponse.shareHash,
       questionsAndAnswers: apiResponse.questionsAndAnswers.map((qa: any) => ({
         id: qa.id,
         ques: qa.ques,
