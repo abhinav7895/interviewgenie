@@ -7,7 +7,7 @@ export const generatePrompt = (
   includeAnswer?: "false" | "true"
 ) => {
   return `Generate ${
-    includeAnswer === "true" ? "10" : "20"
+    includeAnswer === "true" ? "7" : "10"
   } interview questions${
     includeAnswer === "true" ? " with their answers" : ""
   } for a ${role}${level ? ` at ${level} level` : ""}.
